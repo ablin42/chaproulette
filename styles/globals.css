@@ -6,6 +6,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background-color: #0F131D !important;
   min-width: 650px;
+  overflow: hidden;
 }
 
 a {
@@ -15,6 +16,10 @@ a {
 
 h1, h2, h3, h4, h5, h6 {
   color: #456cd1
+}
+
+input, select {
+  border-radius: 0px;
 }
 
 * {

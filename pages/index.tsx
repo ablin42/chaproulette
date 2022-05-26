@@ -57,10 +57,10 @@ const selectOptions = [
     value: "440",
     name: "5v5 Ranked Flex",
   },
-  {
-    value: "450",
-    name: "ARAAAAAAAAAAM",
-  },
+  // {
+  //   value: "450",
+  //   name: "ARAAAAAAAAAAM",
+  // },
 ];
 
 const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
@@ -79,7 +79,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     e.preventDefault();
     const tooltip = document.querySelector(".tooltiptextSpecial");
 
-    console.log(tooltip)
+    console.log(tooltip);
     if (tooltip && !tooltip.classList.contains("tooltip-visible")) {
       tooltip.classList.add("tooltipAnim");
       tooltip.classList.add("tooltip-visible");
@@ -95,9 +95,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     navigator.clipboard.writeText(copyText);
   }
 
-  function copyToClipboard() {
-   
-  }
+  function copyToClipboard() {}
 
   const handleError = (error: string) => {
     setError(error);
@@ -162,7 +160,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
           </div>
         )}
 
-        <h1 className={styles.title}>"{summoner.name || summonerName}"</h1>
+        <h1 className={styles.title}>&quot;{summoner.name || summonerName}&quot;</h1>
         <br />
 
         <div className="input-group mb-3" style={{ width: "400px" }}>
@@ -173,6 +171,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             aria-label="summonername"
             aria-describedby="button-addon2"
             onChange={(e) => setSummonerName(e.target.value)}
+            style={{ borderRadius: 0 }}
           />
           <button
             className="btn btn-primary"
@@ -183,6 +182,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
               justifyContent: "center",
               alignItems: "center",
               display: "flex",
+              borderRadius: 0,
             }}
           >
             Load / Refresh
@@ -203,6 +203,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             aria-label="Default select example"
             onChange={(e) => setQueueType(e.target.value)}
             value={queueType}
+            style={{ borderRadius: 0 }}
           >
             {selectOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -215,17 +216,26 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
         <Wheel items={usableData} />
 
         <footer>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              position: "absolute",
+              left: "1%",
+              bottom: "1.5%",
+            }}
+          >
             <a href="https://twitter.com/0xharb">
-              <Image width={50} height={50} src="/img/ratirlKissMirror.png" />
+              <Image width={50} height={50} src="/img/ratirlKissMirror.png" alt="0xHarb twitter" />
             </a>
             <a href="https://twitter.com/Chap_GG">
-              <Image width={50} height={50} src="/img/chap.png" />
+              <Image width={50} height={50} src="/img/chap.png" alt="Chap twitter" />
             </a>
             <a href="https://www.instagram.com/jjdr___/">
-              <Image width={50} height={50} src="/img/ratirlKiss.png" />
+              <Image width={50} height={50} src="/img/ratirlKiss.png" alt="jjdr instagram" />
             </a>
           </div>
+
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ul>
               <li>
@@ -247,17 +257,22 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
                 </a>
               </li>
               <li>
-                <a href="#" onClick={(e) => handleClipboard(e)}>
-                    <FontAwesomeIcon
-                      icon={faEthereum}
-                      fontSize={30}
-                      width={30}
-                      color="#456cd1"
-                    />
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={(e) => handleClipboard(e)}
+                >
+                  <FontAwesomeIcon
+                    icon={faEthereum}
+                    fontSize={30}
+                    width={30}
+                    color="#456cd1"
+                  />
                   <div className="tooltipSpecial">
-                    <span className="tooltiptextSpecial">Copied to clipboard!</span>
+                    <span className="tooltiptextSpecial">
+                      Copied to clipboard!
+                    </span>
                   </div>
-                </a>
+                </span>
               </li>
             </ul>
           </div>
@@ -266,7 +281,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     </div>
   );
 };
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const chap_name = "chap fill acc";
   let res = await fetch(
     `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${chap_name}`,
