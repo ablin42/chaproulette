@@ -4,7 +4,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #0F131D !important;
+  background-color: #0c0f17 !important;
   min-width: 650px;
   overflow: hidden;
 }
@@ -73,7 +73,7 @@ span {
   --wheel-size: 500px;
   --wheel-slice-spacing: 75px;
   --wheel-border-size: 5px;
-  --wheel-color: #3c5699;
+  --wheel-color: #30457a;
   --neutral-color: #ede3e3;
   --PI: 3.14159265358979;
   --nb-item: 0;
