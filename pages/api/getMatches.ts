@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const API_HOST = "https://euw1.api.riotgames.com";
+const API_HOST = "https://europe.api.riotgames.com";
 const API_KEY = process.env.API_KEY;
 const headers = {
   "X-Riot-Token": API_KEY,
@@ -10,13 +10,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { summonerName } = req.query;
+  const { puuid, type, queue } = req.query;
 
   const response = await fetch(
-    `${API_HOST}/lol/summoner/v4/summoners/by-name/${summonerName}`,
+    `${API_HOST}/lol/match/v5/matches/by-puuid/${puuid}/ids?type=${type}&count=1&queue=${queue}`,
     { headers }
   );
-  const summoner = await response.json();
+  const matches = await response.json();
 
-  res.status(200).json(summoner);
+  res.status(200).json(matches);
 }

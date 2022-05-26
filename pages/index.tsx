@@ -5,7 +5,10 @@ import styles from "../styles/Home.module.css";
 import Wheel from "../components/Wheel";
 
 const API_HOST = "https://europe.api.riotgames.com";
-const API_KEY = "RGAPI-17ae741a-a2ef-4b93-bf77-9372e2b01b67";
+const API_KEY = process.env.API_KEY;
+const headers = {
+  "X-Riot-Token": API_KEY,
+} as any;
 const CHAP_PUUID =
   "b-XsF_M6AvSsyKpGzc5T4jMpCvPocKD1uJfDDdq01ta1sTV0rLZSByuy9wXePcMkChLNp-lrFy_sDA";
 
@@ -50,8 +53,8 @@ const selectOptions = [
   },
   {
     value: "450",
-    name: "ARAAAAAAAAAAM"
-  }
+    name: "ARAAAAAAAAAAM",
+  },
 ];
 
 const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
@@ -60,32 +63,26 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
   const [usableData, setUsableData] = useState(gameData);
   const [queueType, setQueueType] = useState("430");
 
+
   useEffect(() => {
     onSearch();
   }, [queueType]);
 
   const onSearch = async () => {
-    console.log("searching");
-    // const response = await fetch(`/api/searchByName?summonerName=${summonerName}`);
-    // const summoner = response.json();
-    // console.log(summoner, "!")
     let response = await fetch(
-      `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${API_KEY}`
+      `/api/searchByName?summonerName=${summonerName}`
     );
     const fetchedSummoner = await response.json();
     setSummoner(fetchedSummoner);
 
     response = await fetch(
-      `${API_HOST}/lol/match/v5/matches/by-puuid/${fetchedSummoner.puuid}/ids?api_key=${API_KEY}&type=${type}&count=1&queue=${queueType}`
+      `/api/getMatches?puuid=${fetchedSummoner.puuid}&type=${type}&queue=${queueType}`
     );
     const matches = await response.json();
     const lastMatchId = matches[0];
 
-    response = await fetch(
-      `${API_HOST}/lol/match/v5/matches/${lastMatchId}?api_key=${API_KEY}`
-    );
+    response = await fetch(`/api/getMatchData?matchId=${lastMatchId}`);
     const lastGameData = await response.json();
-    console.log(lastGameData, "!!!!!!!!");
     setUsableData(formatData(lastGameData, fetchedSummoner));
   };
 
@@ -125,12 +122,10 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             className="form-select"
             aria-label="Default select example"
             onChange={(e) => setQueueType(e.target.value)}
+            value={queueType}
           >
             {selectOptions.map((option) => (
-              <option
-                selected={queueType === option.value}
-                value={option.value}
-              >
+              <option key={option.value} value={option.value}>
                 {option.name}
               </option>
             ))}
@@ -145,19 +140,21 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
 export async function getStaticProps() {
   const chap_name = "chap fill acc";
   let res = await fetch(
-    `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${chap_name}?api_key=${API_KEY}`
+    `https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${chap_name}`,
+    { headers }
   );
   const summoner = await res.json();
 
   res = await fetch(
-    `${API_HOST}/lol/match/v5/matches/by-puuid/${CHAP_PUUID}/ids?api_key=${API_KEY}&type=${type}&count=1`
+    `${API_HOST}/lol/match/v5/matches/by-puuid/${CHAP_PUUID}/ids?type=${type}&count=1`,
+    { headers }
   );
   const matches = await res.json();
 
   const lastMatchId = matches[0];
-  res = await fetch(
-    `${API_HOST}/lol/match/v5/matches/${lastMatchId}?api_key=${API_KEY}`
-  );
+  res = await fetch(`${API_HOST}/lol/match/v5/matches/${lastMatchId}`, {
+    headers,
+  });
   const gameData = await res.json();
 
   return {
