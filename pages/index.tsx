@@ -19,10 +19,9 @@ const headers = {
 const CHAP_PUUID =
   "b-XsF_M6AvSsyKpGzc5T4jMpCvPocKD1uJfDDdq01ta1sTV0rLZSByuy9wXePcMkChLNp-lrFy_sDA";
 
-const type = "normal"; //let user choose later on ranked|normal|tourney|tutorial
+const type = "normal"; //TODO let user choose later on ranked|normal|tourney|tutorial
 
 const formatData = (data: any, summoner: any) => {
-  console.log(data.info.participants[0].puuid, summoner.name);
   const player = data.info.participants.find(
     (player: any) => player.puuid === summoner.puuid
   );
@@ -66,6 +65,8 @@ const selectOptions = [
 
 const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
   const [summonerName, setSummonerName] = useState("chap fill acc");
+  const [showError, setError] = useState<null | string>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [summoner, setSummoner] = useState(fetchedSummoner);
   const [usableData, setUsableData] = useState(gameData);
   const [queueType, setQueueType] = useState("430");
@@ -74,22 +75,64 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     onSearch();
   }, [queueType]);
 
+  function handleClipboard(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault();
+    const tooltip = document.querySelector(".tooltiptextSpecial");
+
+    console.log(tooltip)
+    if (tooltip && !tooltip.classList.contains("tooltip-visible")) {
+      tooltip.classList.add("tooltipAnim");
+      tooltip.classList.add("tooltip-visible");
+      setTimeout(() => {
+        if (tooltip) {
+          tooltip.classList.remove("tooltip-visible");
+          tooltip.classList.remove("tooltipAnim");
+        }
+      }, 3000);
+    }
+
+    const copyText = "0xCC61d2bb1A215f19922eCF81613bEa3253713371";
+    navigator.clipboard.writeText(copyText);
+  }
+
+  function copyToClipboard() {
+   
+  }
+
+  const handleError = (error: string) => {
+    setError(error);
+    setIsLoading(false);
+    setTimeout(() => {
+      if (showError !== null && error !== showError) setError(null);
+    }, 1000 * 15);
+  };
+
   const onSearch = async () => {
+    setIsLoading(true);
     let response = await fetch(
       `/api/searchByName?summonerName=${summonerName}`
     );
     const fetchedSummoner = await response.json();
     setSummoner(fetchedSummoner);
+    if (!fetchedSummoner.puuid)
+      return handleError(
+        "No summoner found, check spelling & make sure this is an EUW account"
+      );
 
     response = await fetch(
-      `/api/getMatches?puuid=${fetchedSummoner.puuid}&type=${type}&queue=${queueType}`
+      `/api/getMatches?puuid=${fetchedSummoner.puuid}&queue=${queueType}` //&type={type}
     );
     const matches = await response.json();
+    if (matches.length <= 0)
+      return handleError(
+        "No match found, make sure you've set the right game mode"
+      );
     const lastMatchId = matches[0];
 
     response = await fetch(`/api/getMatchData?matchId=${lastMatchId}`);
     const lastGameData = await response.json();
     setUsableData(formatData(lastGameData, fetchedSummoner));
+    setIsLoading(false);
   };
 
   return (
@@ -102,7 +145,24 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
       </Head>
 
       <main className={styles.main} style={{ padding: "30px 0 0 0" }}>
-        <h1 className={styles.title}>"{summoner.name}"</h1>
+        {showError && (
+          <div
+            style={{ position: "absolute", top: "3%", left: "2%" }}
+            className="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            {showError}
+            <button
+              onClick={() => setError(null)}
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
+
+        <h1 className={styles.title}>"{summoner.name || summonerName}"</h1>
         <br />
 
         <div className="input-group mb-3" style={{ width: "400px" }}>
@@ -119,8 +179,22 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             type="button"
             id="button-addon2"
             onClick={(_) => onSearch()}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
           >
             Load / Refresh
+            {isLoading && (
+              <div
+                style={{ marginLeft: "10px" }}
+                className="spinner-border text-light"
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            )}
           </button>
         </div>
         <div className="input-group mb-3" style={{ width: "400px" }}>
@@ -137,6 +211,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             ))}
           </select>
         </div>
+
         <Wheel items={usableData} />
 
         <footer>
@@ -151,7 +226,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
               <Image width={50} height={50} src="/img/ratirlKiss.png" />
             </a>
           </div>
-          {/* <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <ul>
               <li>
                 <a href="https://twitter.com/0xharb">
@@ -172,26 +247,20 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <FontAwesomeIcon
-                    icon={faEthereum}
-                    fontSize={30}
-                    width={30}
-                    color="#456cd1"
-                  />
+                <a href="#" onClick={(e) => handleClipboard(e)}>
+                    <FontAwesomeIcon
+                      icon={faEthereum}
+                      fontSize={30}
+                      width={30}
+                      color="#456cd1"
+                    />
+                  <div className="tooltipSpecial">
+                    <span className="tooltiptextSpecial">Copied to clipboard!</span>
+                  </div>
                 </a>
               </li>
             </ul>
-            </div> */}
-
-            {/* <span>
-              <FontAwesomeIcon
-                icon={faEthereum}
-                fontSize={30}
-                color="#456cd1"
-              />{" "}
-              (ETH/ERC-20): 0xCC61d2bb1A215f19922eCF81613bEa3253713371
-            </span> */}
+          </div>
         </footer>
       </main>
     </div>

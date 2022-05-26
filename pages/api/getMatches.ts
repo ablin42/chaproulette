@@ -10,10 +10,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const { puuid, type, queue } = req.query;
+  const { puuid, queue } = req.query; // type
 
   const response = await fetch(
-    `${API_HOST}/lol/match/v5/matches/by-puuid/${puuid}/ids?type=${type}&count=1&queue=${queue}`,
+    `${API_HOST}/lol/match/v5/matches/by-puuid/${puuid}/ids?&count=1&queue=${queue}`, //&type={type}
     { headers }
   );
   const matches = await response.json();
