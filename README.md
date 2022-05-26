@@ -1,0 +1,1 @@
+Small app bootstrapped within a few hours to randomly be assigned a lane & champion depending on the ennemy team from your last game
