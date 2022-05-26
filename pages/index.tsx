@@ -31,14 +31,41 @@ const formatData = (data: any, summoner: any) => {
   });
 };
 
+const selectOptions = [
+  {
+    value: "400",
+    name: "5v5 Draft Pick",
+  },
+  {
+    value: "420",
+    name: "5v5 Ranked Solo",
+  },
+  {
+    value: "430",
+    name: "5v5 Blind Pick",
+  },
+  {
+    value: "440",
+    name: "5v5 Ranked Flex",
+  },
+  {
+    value: "450",
+    name: "ARAAAAAAAAAAM"
+  }
+];
+
 const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
   const [summonerName, setSummonerName] = useState("chap fill acc");
   const [summoner, setSummoner] = useState(fetchedSummoner);
-  const [usableData, setUsableData] = useState(gameData)
-  const queueType = "430";
+  const [usableData, setUsableData] = useState(gameData);
+  const [queueType, setQueueType] = useState("430");
+
+  useEffect(() => {
+    onSearch();
+  }, [queueType]);
 
   const onSearch = async () => {
-    console.log("searching")
+    console.log("searching");
     // const response = await fetch(`/api/searchByName?summonerName=${summonerName}`);
     // const summoner = response.json();
     // console.log(summoner, "!")
@@ -58,7 +85,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
       `${API_HOST}/lol/match/v5/matches/${lastMatchId}?api_key=${API_KEY}`
     );
     const lastGameData = await response.json();
-    console.log(lastGameData, "!!!!!!!!")
+    console.log(lastGameData, "!!!!!!!!");
     setUsableData(formatData(lastGameData, fetchedSummoner));
   };
 
@@ -72,7 +99,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Coucou {summoner.name}</h1>
+        <h1 className={styles.title}>"{summoner.name}"</h1>
         <br />
 
         <div className="input-group mb-3" style={{ width: "400px" }}>
@@ -90,13 +117,28 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
             id="button-addon2"
             onClick={(_) => onSearch()}
           >
-            Load last match
+            Load / Refresh
           </button>
         </div>
-
+        <div className="input-group mb-3" style={{ width: "400px" }}>
+          <select
+            className="form-select"
+            aria-label="Default select example"
+            onChange={(e) => setQueueType(e.target.value)}
+          >
+            {selectOptions.map((option) => (
+              <option
+                selected={queueType === option.value}
+                value={option.value}
+              >
+                {option.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <Wheel items={usableData} />
       </main>
-    </div>//EUW1_5523329431
+    </div>
   );
 };
 
@@ -119,7 +161,10 @@ export async function getStaticProps() {
   const gameData = await res.json();
 
   return {
-    props: { gameData: formatData(gameData, summoner), fetchedSummoner: summoner },
+    props: {
+      gameData: formatData(gameData, summoner),
+      fetchedSummoner: summoner,
+    },
   };
 }
 
