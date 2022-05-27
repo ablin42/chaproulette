@@ -228,13 +228,13 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
               bottom: "1.5%",
             }}
           >
-            <a href="https://twitter.com/0xharb">
+            <a target="_blank" href="https://twitter.com/0xharb">
               <Image width={50} height={50} src="/img/ratirlKissMirror.png" alt="0xHarb twitter" />
             </a>
-            <a href="https://twitter.com/Chap_GG">
+            <a target="_blank" href="https://twitter.com/Chap_GG">
               <Image width={50} height={50} src="/img/chap.png" alt="Chap twitter" />
             </a>
-            <a href="https://www.instagram.com/jjdr___/">
+            <a target="_blank" href="https://www.instagram.com/jjdr___/">
               <Image width={50} height={50} src="/img/ratirlKiss.png" alt="jjdr instagram" />
             </a>
           </div>
@@ -242,7 +242,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ul>
               <li>
-                <a href="https://twitter.com/0xharb">
+                <a target="_blank" href="https://twitter.com/0xharb">
                   <FontAwesomeIcon
                     icon={faTwitter}
                     fontSize={30}
@@ -251,7 +251,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
                 </a>
               </li>
               <li>
-                <a href="https://github.com/ablin42">
+                <a target="_blank" href="https://github.com/ablin42">
                   <FontAwesomeIcon
                     icon={faGithub}
                     fontSize={30}

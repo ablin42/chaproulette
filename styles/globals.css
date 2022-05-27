@@ -84,7 +84,6 @@ span {
   --reset-duration: 0.25s;
 }
 
-/* Conteneur de la roue = cercle rose extérieur */
 .wheel-container {
   display: block;
   position: relative;
@@ -99,7 +98,7 @@ span {
   user-select: none;
 }
 
-/* Triangle de sélection = 1 rose +  1 blanc */
+/* selection triangle (to show winner) */
 .wheel-container::before,
 .wheel-container::after {
   content: '';
@@ -124,7 +123,6 @@ span {
   border-right-color: var(--neutral-color);
 }
 
-/* Roue */
 .wheel {
   display: block;
   position: relative;
@@ -146,7 +144,7 @@ span {
   transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
 }
 
-/* Centre de la roue = rond blanc au centre */
+/* wheel center */
 .wheel::after {
   display: block;
   position: absolute;
@@ -161,27 +159,27 @@ span {
   border-radius: 50%;
 }
 
-/* Element sur la roue */
+/* item */
 .wheel-item {
   display: flex;
   position: absolute;
   box-sizing: border-box;
 
-  /* position de l'item */
+  /* item position */
   top: 50%;
   left: 50%;
   width: 50%;
   transform-origin: center left;
   transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
 
-  /* texte */
+  /* text */
   color: var(--neutral-color);
   text-align: right;
   padding: 0 25px 0 50px;
   font-family: var(--wheel-font);
 }
 
-/* Background de l'élément = triangle rose plus clair */
+/* item background */
 .wheel-item:before {
   content: ' ';
   display: block;
@@ -197,11 +195,10 @@ span {
   opacity: 0.25;
 
   /* 
-    Largeur du triangle
-    Je ne sais pas pourquoi j'ai besoin d'ajouter 
-      " + var(--wheel-size) / 2 " dans slice-max-width  ==> donne 2.PI.R + R
-    mais globalement ca marche a peu près bien 
-    TODO: A étudier 
+    triangle width
+    no clue why this is needed
+    " + var(--wheel-size) / 2 " in slice-max-width  ==> gives 2.PI.R + R
+    TODO fix?
   */
   --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size) / 2);
   --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));
@@ -210,11 +207,6 @@ span {
   /* profondeur du triangle = du centre de la roue à la bordure = 300px / 2 */
   border-right: solid var(--neutral-color) calc(var(--wheel-size) / 2);
 }
-
-
-//////////////
-
-
 
 .tooltipSpecial {
   width: fit-content;
@@ -234,8 +226,8 @@ span {
   border-radius: 6px;
   position: absolute;
   z-index: 1;
-  left: 55%;
-  bottom: 1%;
+  margin-left: 200px !important;
+  bottom: -15px;
   margin-left: 0;
   opacity: 0;
   -webkit-transition: ease-in-out 0.3s;
