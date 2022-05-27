@@ -137,9 +137,12 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     <div className={styles.container}>
       <Head>
         <title>Chaproulette</title>
-        <meta name="description" content="De grâce" />
+        <meta name="description" content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKis" />
+        <meta name="keywords" content="Chap, jjdr, 0xharb, eKiss" />
+        <meta name="author" content="0xharb" />
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:image" content="/img/ratirlKiss.png" />
       </Head>
 
       <main className={styles.main} style={{ padding: "30px 0 0 0" }}>
