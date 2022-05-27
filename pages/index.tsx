@@ -137,7 +137,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     <div className={styles.container}>
       <Head>
         <title>Chaproulette</title>
-        <meta name="description" content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKis" />
+        <meta name="description" content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKiss" />
         <meta name="keywords" content="Chap, jjdr, 0xharb, eKiss" />
         <meta name="author" content="0xharb" />
         <link rel="icon" href="/favicon.ico" />
