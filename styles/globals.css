@@ -26,6 +26,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-control:focus {
   background-color: #232526 !important;
+  color: rgb(209, 205, 199); !important;
 }
 
 input, select {
