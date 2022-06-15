@@ -16,10 +16,7 @@ const API_KEY = process.env.API_KEY;
 const headers = {
   "X-Riot-Token": API_KEY,
 } as any;
-const CHAP_PUUID =
-  "b-XsF_M6AvSsyKpGzc5T4jMpCvPocKD1uJfDDdq01ta1sTV0rLZSByuy9wXePcMkChLNp-lrFy_sDA";
-
-const type = "normal"; //TODO let user choose later on ranked|normal|tourney|tutorial
+const type = "normal";
 
 const formatData = (data: any, summoner: any) => {
   const player = data.info.participants.find(
@@ -79,7 +76,6 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     e.preventDefault();
     const tooltip = document.querySelector(".tooltiptextSpecial");
 
-    console.log(tooltip);
     if (tooltip && !tooltip.classList.contains("tooltip-visible")) {
       tooltip.classList.add("tooltipAnim");
       tooltip.classList.add("tooltip-visible");
@@ -94,8 +90,6 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     const copyText = "0xCC61d2bb1A215f19922eCF81613bEa3253713371";
     navigator.clipboard.writeText(copyText);
   }
-
-  function copyToClipboard() {}
 
   const handleError = (error: string) => {
     setError(error);
@@ -137,7 +131,10 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
     <div className={styles.container}>
       <Head>
         <title>Chaproulette</title>
-        <meta name="description" content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKiss" />
+        <meta
+          name="description"
+          content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKiss"
+        />
         <meta name="keywords" content="Chap, jjdr, 0xharb, eKiss" />
         <meta name="author" content="0xharb" />
         <link rel="icon" href="/favicon.ico" />
@@ -163,7 +160,9 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
           </div>
         )}
 
-        <h1 className={styles.title}>&quot;{summoner.name || summonerName}&quot;</h1>
+        <h1 className={styles.title}>
+          &quot;{summoner.name || summonerName}&quot;
+        </h1>
         <br />
 
         <div className="input-group mb-3" style={{ width: "400px" }}>
@@ -228,21 +227,52 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
               bottom: "1.5%",
             }}
           >
-            <a target="_blank" rel="noreferrer" href="https://twitter.com/0xharb">
-              <Image width={50} height={50} src="/img/ratirlKissMirror.png" alt="0xHarb twitter" />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://twitter.com/0xharb"
+            >
+              <Image
+                width={50}
+                height={50}
+                src="/img/ratirlKissMirror.png"
+                alt="0xHarb twitter"
+              />
             </a>
-            <a target="_blank" rel="noreferrer" href="https://twitter.com/Chap_GG">
-              <Image width={50} height={50} src="/img/chap.png" alt="Chap twitter" />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://twitter.com/Chap_GG"
+            >
+              <Image
+                width={50}
+                height={50}
+                src="/img/chap.png"
+                alt="Chap twitter"
+              />
             </a>
-            <a target="_blank" rel="noreferrer" href="https://www.instagram.com/jjdr___/">
-              <Image width={50} height={50} src="/img/ratirlKiss.png" alt="jjdr instagram" />
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://www.instagram.com/jjdr___/"
+            >
+              <Image
+                width={50}
+                height={50}
+                src="/img/ratirlKiss.png"
+                alt="jjdr instagram"
+              />
             </a>
           </div>
 
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ul>
               <li>
-                <a target="_blank" rel="noreferrer" href="https://twitter.com/0xharb">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://twitter.com/0xharb"
+                >
                   <FontAwesomeIcon
                     icon={faTwitter}
                     fontSize={30}
@@ -251,7 +281,11 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
                 </a>
               </li>
               <li>
-                <a target="_blank" rel="noreferrer" href="https://github.com/ablin42">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://github.com/ablin42"
+                >
                   <FontAwesomeIcon
                     icon={faGithub}
                     fontSize={30}
@@ -293,7 +327,7 @@ export async function getServerSideProps() {
   const summoner = await res.json();
 
   res = await fetch(
-    `${API_HOST}/lol/match/v5/matches/by-puuid/${CHAP_PUUID}/ids?type=${type}&count=1`,
+    `${API_HOST}/lol/match/v5/matches/by-puuid/${summoner.puuid}/ids?type=${type}&count=1`,
     { headers }
   );
   const matches = await res.json();
