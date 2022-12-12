@@ -233,6 +233,7 @@ span {
   opacity: 0;
   -webkit-transition: ease-in-out 0.3s;
   transition: ease-in-out 0.3s;
+  display: none;
 }
 
 .tooltipSpecial .tooltiptextSpecial::after {
@@ -248,6 +249,7 @@ span {
 
 .tooltip-visible {
   opacity: 1 !important;
+  display: initial !important;
 }
 
 @-webkit-keyframes tooltipAnim {
