@@ -6,6 +6,10 @@ import styles from "../styles/Home.module.css";
 import Wheel from "../components/Wheel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faCircleQuestion,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import {
   faTwitter,
   faGithub,
   faEthereum,
@@ -67,6 +71,7 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
   const [summoner, setSummoner] = useState(fetchedSummoner);
   const [usableData, setUsableData] = useState(gameData);
   const [queueType, setQueueType] = useState("430");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     onSearch();
@@ -135,6 +140,12 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
           name="description"
           content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKiss"
         />
+        <meta property="og:title" content="Chaproulette" />
+        <meta name="title" content="Chaproulette" />
+        <meta
+          property="og:description"
+          content="Hey Chap, i was wondering if you could kiss webcam same time as i do so it's like we eKiss  ? @chap_gg ratirlKiss"
+        />
         <meta name="keywords" content="Chap, jjdr, 0xharb, eKiss" />
         <meta name="author" content="0xharb" />
         <link rel="icon" href="/favicon.ico" />
@@ -143,6 +154,70 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
       </Head>
 
       <main className={styles.main} style={{ padding: "30px 0 0 0" }}>
+        {open && (
+          <div
+            onClick={() => setOpen(false)}
+            style={{
+              backgroundColor: "#070a1269",
+              position: "absolute",
+              width: "100%",
+              height: "101%",
+              marginTop: "-20px",
+              zIndex: "443",
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: "#070a12",
+                position: "absolute",
+                width: "40%",
+                height: "50%",
+                transform: "translate(75%, 50%)",
+                zIndex: "444",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                fontSize={30}
+                color="#456cd1"
+                style={{
+                  cursor: "pointer",
+                  position: "absolute",
+                  top: "20px",
+                  right: "20px",
+                }}
+                onClick={() => setOpen(false)}
+              />
+              <div
+                className="row"
+                style={{ padding: "75px 50px", color: "white" }}
+              >
+                <div
+                  className="col-8 "
+                  style={{ alignItems: "center", margin: "auto" }}
+                >
+                  <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
+                    About Chaproulette.lol
+                  </h1>
+
+                  <p>
+                    This is a simple app allowing you to roll for a champion to
+                    play, depending on the ennemy team from your last game
+                    <br />
+                    <br />
+                    Simply enter your summoner name (EUW) and select the game
+                    mode you want to pull data from, the site will automatically
+                    load the wheel with the data
+                    <br />
+                    <br />
+                    When you&apos;re ready, click on the wheel to spin it, GLHF
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {showError && (
           <div
             style={{ position: "absolute", top: "3%", left: "2%" }}
@@ -267,6 +342,13 @@ const Home: NextPage = ({ gameData, fetchedSummoner }: any) => {
 
           <div style={{ display: "flex", justifyContent: "center" }}>
             <ul>
+              <li style={{ cursor: "pointer" }} onClick={() => setOpen(true)}>
+                <FontAwesomeIcon
+                  icon={faCircleQuestion}
+                  fontSize={30}
+                  color="#456cd1"
+                />
+              </li>
               <li>
                 <a
                   target="_blank"
